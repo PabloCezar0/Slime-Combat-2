@@ -5,7 +5,7 @@ import time
 import character
 import buttons
 from fila import Queue
-from heap import MinHeap
+from heap import *
 import random
 from credits import Credits
 
@@ -149,7 +149,7 @@ for i in range(0,8):
 print(gameHeap)
 
 
-pontuationHeap = MinHeap(4)
+pontuationHeap = scoreHeap(4)
 
 
 #Função que percorre a Heap
