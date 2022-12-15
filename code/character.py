@@ -102,7 +102,7 @@ class Character:
         self.action = 0
         self.update_time = pygame.time.get_ticks()
         self.x = self.start_x 
-        self.y = self.start_y + 500
+        self.y = self.start_y
         self.scale = self.start_scale
   
 

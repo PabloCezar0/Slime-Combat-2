@@ -125,10 +125,10 @@ right_button = buttons.Button(screen, 500,100, right_icon, 80, 28)
 #criar inimigos              x  y scale name hp mp str mgc agi def mdef hpP mpP level frame weak
 Slime = character.Character(140,370,1,'Slime',100,100,10,100,10,10,10,2,2,1,8,0)
 enemyList = [0]*4
-enemyList[0] = character.Character(700,385,5 ,'Zombie',50,0,10,0,3,0,1,0,0,1,7,1)
-enemyList[1] = character.Character(500,385,5 ,'Zombie',60,0,15,0,4,2,1,0,0,2,7,1)
-enemyList[2] = character.Character(700,360,5 ,'Skelleton',50,0,10,0,3,0,1,0,0,1,18,1)
-enemyList[3] = character.Character(500,360,5 ,'Skelleton',60,0,15,0,3,50,1,0,0,2,18,1)
+enemyList[0] = character.Character(600,385,5 ,'Zombie',50,0,10,0,3,0,1,0,0,1,7,1)
+enemyList[1] = character.Character(600,385,5 ,'Zombie',60,0,15,0,4,2,1,0,0,2,7,1)
+enemyList[2] = character.Character(600,360,5 ,'Skelleton',50,0,10,0,3,0,1,0,0,1,18,1)
+enemyList[3] = character.Character(600,360,5 ,'Skelleton',60,0,15,0,3,50,1,0,0,2,18,1)
 
 #Bosses
 bossList = [0]*4
@@ -525,8 +525,7 @@ while run == True:
                 if action_cd >= 7000: 
                     game_win = 1 
                 action_cd += 1
-                while pontuationHeap.size != 0:           
-                    level_pontuation.append(pontuationHeap.remove())#mete a pontuacao em uma lista
+#mete a pontuacao em uma lista
     
 
 
@@ -534,8 +533,6 @@ while run == True:
                 if action_cd >= 7000: 
                     game_win = 1 
                 action_cd += 1
-                while pontuationHeap.size != 0:           
-                    level_pontuation.append(pontuationHeap.remove())
 
             sword_button.clicked = False
             fireball_button.clicked = False
@@ -569,6 +566,8 @@ while run == True:
         pygame.display.update()  
 
     while game_win == 1:
+        while pontuationHeap.size != 0:           
+            level_pontuation.append(pontuationHeap.remove())#remove do heap e faz um HEAP SORT!!!
         draw_win()
         drawn_text('Scores', win_font, wine, 250, 130)
         for i, point in enumerate(level_pontuation):
