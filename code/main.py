@@ -129,16 +129,16 @@ right_button = buttons.Button(screen, 500,100, right_icon, 80, 28)
 Slime = character.Character(140,370,1,'Slime',100,100,10,100,10,10,10,2,2,1,8,0)
 enemyList = [0]*4
 enemyList[0] = character.Character(700,385,5 ,'Zombie',50,0,10,0,3,0,1,0,0,1,7,1)
-enemyList[1] = character.Character(500,385,5 ,'Zombie',60,0,10,0,4,2,1,0,0,2,7,1)
+enemyList[1] = character.Character(500,385,5 ,'Zombie',60,0,15,0,4,2,1,0,0,2,7,1)
 enemyList[2] = character.Character(700,360,5 ,'Skelleton',50,0,10,0,3,0,1,0,0,1,18,1)
-enemyList[3] = character.Character(500,360,5 ,'Skelleton',60,0,5,0,3,50,1,0,0,2,18,1)
+enemyList[3] = character.Character(500,360,5 ,'Skelleton',60,0,15,0,3,50,1,0,0,2,18,1)
 
 #Bosses
 bossList = [0]*4
-bossList[0] = character.Character(500,130,4 ,'Demon of Fire',80,50,1000,0,3,50,1,0,0,5,22,1)
-bossList[1] = character.Character(500,130,4 ,'Demon of Fire',95,50,1000,0,3,50,1,0,0,6,22,1)
-bossList[2] = character.Character(600,200,6 ,'Lich',80,100,10,0,3,50,1,0,0,5,18,1)
-bossList[3] = character.Character(600,200,6 ,'Lich',95,100,10,0,3,50,1,0,0,6,18,1)
+bossList[0] = character.Character(500,130,4 ,'Demon of Fire',80,50,25,15,3,50,1,0,0,5,22,1)
+bossList[1] = character.Character(500,130,4 ,'Demon of Fire',95,50,35,20,3,50,1,0,0,6,22,1)
+bossList[2] = character.Character(600,200,6 ,'Lich',80,100,15,30,3,50,1,0,0,5,18,1)
+bossList[3] = character.Character(600,200,6 ,'Lich',95,100,20,35,3,50,1,0,0,6,18,1)
 
 # Cria a árvore min-Heap
 gameHeap = MinHeap(15)
