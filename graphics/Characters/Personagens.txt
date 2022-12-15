@@ -1,0 +1,10 @@
+Slime 
+Zombie level 1 sem poder magico
+Skeleton level 2
+Bear level 3
+
+
+
+Ogre level 7
+Spirit level 8
+Dragon level 10
