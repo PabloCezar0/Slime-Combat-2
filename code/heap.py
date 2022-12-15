@@ -57,23 +57,29 @@ class MinHeap:
 
 # Organiza o Heap de baixo para cima
     def upHeap(self, index):
+        #Enquanto o data possuir um pai e ele for maior, caso seja, eles trocam de posição
         while(self.hasFather(index) and self.father(index).level > self.storage[index].level):
             self.swap(self.fatherIndex(index),index)
             index = self.fatherIndex(index)
 
-
+#Organiza a fila de cima para baixo
     def downHeap(self):
         index = 0
+        #Enquanto houver um filho a esquerda
         while(self.hasLeft(index)):
+            # Inicialmente diz que o index do filho da esquerda possui o menor valor
             smallerChildIndex = self.leftChildIndex(index)
+            #Se possuir um filho à direita, verifica qual dos dois é menor, se o da direita for, seu index vai para a váriavel
             if self.hasRight(index) and self.rightChild(index).level < self.leftChild(index).level:
                 smallerChildIndex = self.rightChildIndex(index)
+                #Verifica se o level do pai é menor que o seu filho com o menor level, se não for, eles trocam de lugar 
             if self.storage[index].level < self.storage[smallerChildIndex].level:
                 break
             else:
                 self.swap(index, smallerChildIndex)
             index = smallerChildIndex
-     
+    
+    #Remove a raiz do heap, e coloca a ultima folha no lugar da raiz
     def remove(self):
         if self.size == 0:
             print("Heap Vazio!")
@@ -149,7 +155,7 @@ class scoreHeap:
         self.upHeap(self.size -1)
 
 # Organiza o Heap de baixo para cima
-    def upHeap(self, index):
+    def upHeap(self, index): 
         while(self.hasFather(index) and self.father(index).pontuation > self.storage[index].pontuation):
             self.swap(self.fatherIndex(index),index)
             index = self.fatherIndex(index)
