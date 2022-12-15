@@ -56,18 +56,15 @@ current_fighter = 1 #lutador 1 protagonista
 
 level_over = 0 #1 acaba o level e manda para o proximo no
 game_win = 0 # 1 o jogo vence -1 game over
-action_cd = 0
-wait_time = 1200
+action_cd = 0 #junto com action_wait faz com que os inimigos nao ataquem imediatamente apos um ataque do player para nao baguncar a tela
+wait_time = 1200 #wait time para facilitar o aciton_wait
 action_wait = wait_time
 clicked = False
-heal = 0
-heal_mp = 0
-next_turn = 0
-turns = 1
-turn_end = 0
-pontuationTurn = 0
-level_pontuation = []
-next_level = 0
+next_turn = 0 #controla o proximo turno
+turn_end = 0 
+pontuationTurn = 0 #pontua o turno
+level_pontuation = [] #uma lista com todos os turnos pontuados
+next_level = 0 #passa pro proximo level em 1
 
 font = pygame.font.SysFont('Times New Roman', 18)#fonte
 end_font = pygame.font.SysFont('Times New Roman', 30)#fonte
@@ -84,7 +81,7 @@ wine = (255,50,50)
 def draw_bg():
    screen.blit(background_img, (0,0))
 
-def draw_win():
+def draw_win(): #tela verde da vitoria
    screen.blit(win_screen, (0,0))
 
 #imprimir texto
@@ -178,22 +175,22 @@ def turnLevel(Heap, Slime, Queue, level):
     Queue.enqueue(Heap.storage[level])
 
 #Função que cria o turno da fase
-def turnQueue(Queue, turns):
+def turnQueue(Queue):
     aux = Queue.dequeue()
     Queue.enqueue(aux)
 
-def pontuation(hp, turns, level):
+def pontuation(hp, level):
     points = (hp+level)
     return points
  
 # Função que aciona os ataques
-def turnAtack(person, turns):
+def turnAtack(person):
     global wait_time
     global action_cd
     global action_wait
     global next_turn
     attack = False
-    magic = random.randint(0,5)
+    magic = random.randint(0,5) #numero aleatorio para deixar um inimigo usar magia
     potion = False
     fire_magic = False
     ice_magic = False
@@ -203,19 +200,20 @@ def turnAtack(person, turns):
     if person.head.data.name == 'Slime':
         if sword_button.clicked == True:
             if fireball_button.clicked == True or lightning_button.clicked == True or ice_button.clicked == True:
-                sword_button.clicked = False
+                sword_button.clicked = False 
             fireball_button.clicked = False
             ice_button.clicked = False
-            lightning_button.clicked = False
-            sword_button.image = active_attack_icon
-            if person.tail.data.rect.collidepoint(pos):
-                pygame.mouse.set_visible(False)
-                screen.blit(active_attack_icon, pos)
-                if clicked == True:
+            lightning_button.clicked = False #desativa todos os outros botoes
+            sword_button.image = active_attack_icon #ativa o botao azul da espada, indicando que o ataque esta ativo
+            if person.tail.data.rect.collidepoint(pos): #pega o retangulo de colisao do personagem no tail da fila, como a condicional if considera o slime sempre como o head, o tail sempre sera um inimigo
+                pygame.mouse.set_visible(False)#deixa o mouse invisivel 
+                screen.blit(active_attack_icon, pos)#ativa o icone de espada no lugar do mouse
+                if clicked == True:#se ataque for verdade a variavel attack fica true, ativando a funcao de ataque logo em baixo  e o targe eh o tail
                     attack = True
                     target = person.tail.data
 
-        if fireball_button.clicked == True:
+        if fireball_button.clicked == True:#mesma coisa da funcao de cima, so muda que o personagem ativa  fire_magic
+            
             if ice_button.clicked == True or lightning_button.clicked == True:
                 fireball_button.clicked = False
             ice_button.clicked = False
@@ -261,7 +259,7 @@ def turnAtack(person, turns):
                     drawn_text('Health Full', font, red, 240, 230)
                     
                 if person.head.data.hp > 50 and person.head.data.hp != person.head.data.max_hp and potion == False:
-                    person.head.data.hp += person.head.data.max_hp - person.head.data.hp
+                    person.head.data.hp += person.head.data.max_hp - person.head.data.hp #cura somente o hp que falta para nao se passar do max_hp
                     potion = True
                     person.head.data.hp_potions -= 1
                     potion_button.clicked = False
@@ -298,19 +296,18 @@ def turnAtack(person, turns):
             #acao do jogador se o slime tiver vivo ele comeca fighter 1 eh slime 2 eh o inimigo 1 e o 3 inimigo 2
  
 
-        if attack == True: #controla o ataque de fogo
+        if attack == True: #controla o ataque normal
             #attack
             if target != None:                       
                 person.head.data.attack(target)
-                sword_button.clicked = False
+                sword_button.clicked = False #desativa todos os botoes 
                 potion = False
                 potion_button.clicked = False
                 mp_button.clicked = False
                 if person.tail.data.hp == 0:
-                    person.tail.data.alive = False
+                    person.tail.data.alive = False #mata se for morto
                 else:
-                    turns += 1
-                    turnQueue(person, turns)
+                    turnQueue(person) #ativa a funcao turnQueue que arruma a pilha para o proximo turno
 
 
 
@@ -327,8 +324,7 @@ def turnAtack(person, turns):
                     if person.tail.data.hp == 0:
                         person.tail.data.alive = False
                     else:
-                        turns += 1
-                        turnQueue(person, turns)
+                        turnQueue(person)
 
 
             else:
@@ -347,8 +343,7 @@ def turnAtack(person, turns):
                     if person.tail.data.hp == 0:
                         person.tail.data.alive = False
                     else:
-                        turns += 1
-                        turnQueue(person, turns)
+                        turnQueue(person)
 
 
             else:
@@ -368,8 +363,7 @@ def turnAtack(person, turns):
                     if person.tail.data.hp == 0:
                         person.tail.data.alive = False
                     else:
-                        turns += 1
-                        turnQueue(person, turns)
+                        turnQueue(person)
                     
 
  
@@ -380,14 +374,14 @@ def turnAtack(person, turns):
 
         
 
-    if person.head.data.name != 'Slime':
+    if person.head.data.name != 'Slime':#comeca o ataque do inimigo
         
         
         action_cd += 1
-        if action_cd >= action_wait:
+        if action_cd >= action_wait:#impede o inimigo de atacar logo apos o protagonista
 
 
-            if person.head.data.name == 'Lich' and person.head.data.mp < 30  or person.head.data.name == 'Demon' and person.head.data.mp < 15 or magic == 5:
+            if person.head.data.name == 'Lich' and person.head.data.mp < 30  or person.head.data.name == 'Demon' and person.head.data.mp < 15 or magic == 5: #ataques especiais dos chefes caso eles tenham manda e o magic que eh random seja 5
 
             
                 if person.head.data.name == 'Lich' and person.head.data.mp >= 30 and magic == 5:
@@ -406,11 +400,11 @@ def turnAtack(person, turns):
                     time.sleep (0.08)
                     
 
-            else:
+            else: #ataque padrao caso seja inimigo normal ou nao tenha os requisitos acima
                 person.head.data.attack(person.tail.data)
-                time.sleep (0.08)
+                time.sleep (0.08)#um pequeno sleep para efeitos cinematograficos
                 
-            turnQueue(person, turns)
+            turnQueue(person)
  
             
         
@@ -441,7 +435,7 @@ while run == True:
         mp_button.draw()
         lightning_button.draw()
 
-        if character_list.head.data.name != Slime:
+        if character_list.head.data.name != Slime:#gera os inimigos na tela
             character_list.head.data.draw()
             character_list.head.data.update()
         if character_list.tail.data.name != Slime:
@@ -449,7 +443,7 @@ while run == True:
             character_list.tail.data.update()
         
 
-        draw_panelEnemy(character_list)
+        draw_panelEnemy(character_list)#coloca o painel dos inimigos
 
         #controlar o ataque
         
@@ -463,21 +457,22 @@ while run == True:
         if level_over == 0: # se o jogo nao tiver ganho roda o codigo abaixo
   
 
-            turnAtack(character_list, turns)
-
+            turnAtack(character_list) #inicia o combate
+            #verificacao de morte do protagonista
             if  character_list.tail.data.name == 'Slime' and character_list.tail.data.hp <= 0:
                 level_over = -1
             
             if character_list.head.data.name == 'Slime' and character_list.head.data.hp <= 0:
-                level_over = -1          
+                level_over = -1      
 
+
+            #verificacao de morte dos inimigos
             if character_list.head.data.name != 'Slime' and character_list.head.data.hp <= 0:
                 action_cd = 0
                 next_level = 1
                 level_over = 1 
                 turn_end = 1
                 
-
             if character_list.tail.data.name != 'Slime' and character_list.tail.data.hp <= 0:
                 action_cd = 0
                 next_level = 1
@@ -500,19 +495,19 @@ while run == True:
         if level_over == 1:
             
 
-            screen.blit(victory_icon, (250,0))
-            left_button.clicked = False
+            screen.blit(victory_icon, (250,0))#exibe a vitoria em cima
+            left_button.clicked = False 
             right_button.clicked = False
             if character_list.tail.data.name != 'Demon of Fire' and character_list.tail.data.name != 'Lich' :
-                if left_button.draw():
+                if left_button.draw():#funcao draw dos botoes ja conta com uma checagem de click
                     left_button.clicked = False
-                    Slime.reset()
+                    Slime.reset()#resta o slime e os oponentes
                     character_list.tail.data.reset()
                     level_over = 0
-                    level = runHeap(gameHeap, level, 'left', next_level)
-                    turnLevel(gameHeap, Slime, character_list, level)
+                    level = runHeap(gameHeap, level, 'left', next_level)#muda o index atual do heap para o da esquerda
+                    turnLevel(gameHeap, Slime, character_list, level)#chama os inimgos do no certo
                     
-                if right_button.draw():
+                if right_button.draw():#faz a mesma coisa que o de cima mas pega o index do no da direita
                     right_button.clicked = False
                     Slime.reset()
                     character_list.tail.data.reset()
@@ -520,22 +515,22 @@ while run == True:
                     level = runHeap(gameHeap, level, 'right', next_level)    
                     turnLevel(gameHeap, Slime, character_list, level)
 
-            if (turn_end == 1):
+            if (turn_end == 1):#gera uma pontuacao para o jogador baseado em sua performance
                 turn_end = 0
-                pontuationTurn = pontuation(character_list.head.data.hp, turns, character_list.tail.data.level)
+                pontuationTurn = pontuation(character_list.head.data.hp,character_list.tail.data.level)
                 auxPoint = Credits(character_list.tail, pontuationTurn)
                 pontuationHeap.insert(auxPoint)
 
-            if character_list.tail.data.name == 'Demon of Fire' or character_list.tail.data.name == 'Lich' :
+            if character_list.tail.data.name == 'Demon of Fire' or character_list.tail.data.name == 'Lich' :#se o que morrer for o boss game_win vira 1 e te da a tela de vitoria com sua pontuacao
                 if action_cd >= 7000: 
                     game_win = 1 
                 action_cd += 1
                 while pontuationHeap.size != 0:           
-                    level_pontuation.append(pontuationHeap.remove())
+                    level_pontuation.append(pontuationHeap.remove())#mete a pontuacao em uma lista
     
 
 
-            if character_list.tail.data.name == 'Demon of Fire' or character_list.tail.data.name == 'Lich' :
+            if character_list.tail.data.name == 'Demon of Fire' or character_list.tail.data.name == 'Lich' :#mesma coisa do de cima, muda so acso o boss esteja no tail
                 if action_cd >= 7000: 
                     game_win = 1 
                 action_cd += 1
@@ -554,7 +549,7 @@ while run == True:
         if level_over == -1:
             restart_button.clicked = False
             screen.blit(defeat_icon, (250,0))
-            if restart_button.draw():
+            if restart_button.draw():#aparece um botao de restart na tela e ao clicar reseta tudo
                 character_list.head.data.reset()
                 character_list.tail.data.reset()
                 current_fighter = 1
@@ -564,7 +559,7 @@ while run == True:
             ice_button.clicked = False
             lightning_button.clicked = False
 
-        for event in pygame.event.get():
+        for event in pygame.event.get():#sai do jogo ao clica no x
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -577,8 +572,8 @@ while run == True:
         draw_win()
         drawn_text('Scores', win_font, wine, 250, 130)
         for i, point in enumerate(level_pontuation):
-            drawn_text(f'{point.enemyName}, Level: {point.level}  Score: {point.pontuation}', end_font, black, 250 , 200+(i*80)) 
-        for event in pygame.event.get():
+            drawn_text(f'{point.enemyName}, Level: {point.level}  Score: {point.pontuation}', end_font, black, 250 , 200+(i*80)) #mostra a pontuacao na tela
+        for event in pygame.event.get():#sai do jogo no x
             if event.type == pygame.QUIT:
                 pygame.display.quit() 
                 pygame.quit()
